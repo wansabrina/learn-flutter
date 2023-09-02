@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'next_page.dart';
+import 'practical_exercise.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,12 +30,15 @@ class MyAppExt extends StatefulWidget {
 class _MyAppExtState extends State<MyAppExt> {
   String buttonNextPage = 'Click';
   int currentIndex = 0;
+  bool _isClicked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //bisa bikin white page, scaffold adalah skeleton dari appnya
       appBar: AppBar(
         title: const Text('App Title'),
+        backgroundColor: Colors.pink.shade300,
       ),
       body: Center(
         child: currentIndex == 0
@@ -67,10 +72,35 @@ class _MyAppExtState extends State<MyAppExt> {
                       },
                       child: const Text('Next Page'),
                     ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        onPrimary: Colors.white,
+                        primary: Colors.green.shade300,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                const PracticalExercise(),
+                          ),
+                        );
+                      },
+                      child: Text('Practical Exercise'),
+                    ),
                   ],
                 ),
               )
-            : Image.asset('images/totoro color.png'),
+            : GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isClicked = !_isClicked;
+                  });
+                },
+                child: _isClicked
+                    ? Image.asset('images/totoro color.png')
+                    : Image.network(
+                        'https://sketchok.com/images/articles/06-anime/033-ghibli/16/16.jpg'),
+              ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -90,17 +120,6 @@ class _MyAppExtState extends State<MyAppExt> {
           });
         },
       ),
-    );
-  }
-}
-
-class NextPage extends StatelessWidget {
-  const NextPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
     );
   }
 }
